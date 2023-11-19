@@ -22,8 +22,37 @@
          - Pure functions disallow you from reading from the state
          - IF a function calls a pure / view function, then it will cost gas
          
+    11. structs
+    
+    People public  person = People({favoriteNumber: 2, name: "Patrick"}); // Declaring person of type People
+    struct People {
+        uint256 favoriteNumber; // indexed at 0
+        string name; // indexed at 1
+    }
 
-    11. 
+    12. Arrays
+         - A list that lets you store objects of other types
+         - Declaring a variable like this:  People[] public people; is a dynamic array since no size is specified
+    13. EVM can access / store information in 6 places
+        - Stack
+        - Memory
+        - Storage
+        - Calldata
+        - Code
+        - Logs
+    
+    14.  - Calldata is a tempory variable that can't be modified
+         - memory is temporary variable that can be modified
+         - storage is permanent variables that can be modified
+         - structs, arrays, and string types need to be given either memory / storage modifiers
+
+    15. Mapping is a data structure where a key is mapped to a single value
+    16. Deploying contract 
+        - Chose Environment to be Injected Provider - MetaMask and it will connect metamask wallet to it
+        - Will deploy contract to Sepholia network
+    
+    17. Contracts can deploy other contracts
+
 
 */
 
@@ -31,7 +60,7 @@
 pragma solidity ^0.8.7;
 
 contract SimpleStorage {
-    uint256 public favoriteNumber;
+    uint256 favoriteNumber;
     // int256 favoriteInt = 5;
     // address myAddress = 0x08c43a4F664C0E2e3972F8c89a0F94714168aE5A;
 
@@ -43,9 +72,41 @@ contract SimpleStorage {
         return favoriteNumber;
     }
 
-    function add() public  pure returns (uint256){
-        return  (1+1);
+    // function add() public  pure returns (uint256){
+    //     return  (1+1);
+    // }
+
+
+    // Structs
+    People public  person = People({favoriteNumber: 2, name: "Patrick"});
+    struct People {
+        uint256 favoriteNumber;
+        string name;
     }
+
+    // Arrays
+    // uint256[] public favoriteNumbersList;
+    People[] public people;
+
+
+    // mapping
+    // Create a mapping that will map name to favorite number
+    // Any element is initialized to 0
+    mapping (string => uint256) public  nameToFavoriteNumber;
+
+
+    function addPerson(string memory _name, uint256 _favoriteNumber) public {
+        // people.push(People(_favoriteNumber, _name));
+
+        People memory newPerson = People({favoriteNumber: _favoriteNumber, name: _name});
+        // People memory newPerson = People(_favoriteNumber, _name); // another way to add struct to array
+        // people.push(People(_favoriteNumber, _name)); // another way to add struct
+        people.push(newPerson);
+        nameToFavoriteNumber[_name] = _favoriteNumber;
+    } 
+
+
+
 
 
 }
