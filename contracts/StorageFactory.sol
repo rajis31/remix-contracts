@@ -6,10 +6,6 @@ pragma solidity ^0.8.0;
    19. Need to ensure that the versions of solidity specified in the contracts are compatible.
    20. When interacting with other contracts, you will always need the address of the contract and ABI
         - ABI is Application Binary Interface 
-   
-
-
-
 */
 
 import "./SimpleStorage.sol";
