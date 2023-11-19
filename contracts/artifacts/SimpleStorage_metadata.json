@@ -68,24 +68,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "person",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "favoriteNumber",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "retrieve",
 				"outputs": [
 					{
@@ -124,7 +106,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/SimpleStorage.sol": "SimpleStorage"
+			"contracts/StorageFactory.sol": "SimpleStorage"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -138,12 +120,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/SimpleStorage.sol": {
-			"keccak256": "0x867689a49a03a79d197149690f45e80f29ad128f780cf1317d15883e1eafe017",
+		"contracts/StorageFactory.sol": {
+			"keccak256": "0x691d25e8a2bc3dddfe402f64bf26becb2f4afc64d5c3f48d351234bd90212d20",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1e050c010053ef07f9f49f4b31aedc92974bbd0b29c73fb657217dd0496216bf",
-				"dweb:/ipfs/QmbhLYy9NesXfvfn6za4YUHak2UAQDYZdTbbzfsoEHBPww"
+				"bzz-raw://e54ae8b7a5b8192751a51b7fb11c09fe69d5fa1039300545dfa793b4e2d8cf26",
+				"dweb:/ipfs/QmZTBFLvgVdHMeKhRswPE1GYd7co7Kk7Sy2zeWEWPm9FCg"
 			]
 		}
 	},
