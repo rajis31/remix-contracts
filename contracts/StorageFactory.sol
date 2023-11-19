@@ -23,16 +23,26 @@ contract StorageFactory {
     }
 
     function sfStore(uint256 _simpleStorageIndex, uint256 _simpleStorageNumber) public  {
+        // ----- Way 1 ------
         // Here simpleStorageArray[_simpleStorageIndex] will return the adddress of the sf contract at index specified
         // From the address you can generate a contract object off that of type SimpleStoract
-        SimpleStorage simpleStorage = SimpleStorage(simpleStorageArray[_simpleStorageIndex]);
-        simpleStorage.store(_simpleStorageNumber);
+        // SimpleStorage simpleStorage = SimpleStorage(simpleStorageArray[_simpleStorageIndex]);
+        // simpleStorage.store(_simpleStorageNumber);
+
+        // ---- Way 2 -----
+        SimpleStorage(simpleStorageArray[_simpleStorageIndex]).store(_simpleStorageNumber);
     }
 
     function sfGet(uint256 _simpleStorageIndex) public  view returns (uint256) {
-         SimpleStorage simpleStorage = SimpleStorage(simpleStorageArray[_simpleStorageIndex]);
-         return simpleStorage.retrieve(); // Call retrieve function of SimpleStorage which gets the favoriteNumber
-    }
+        //------ Way 1 -------
+        //  SimpleStorage simpleStorage = SimpleStorage(simpleStorageArray[_simpleStorageIndex]);
+        //  return simpleStorage.retrieve(); // Call retrieve function of SimpleStorage which gets the favoriteNumber
+
+        //----- Way 2 -------
+        // the array returns an simpleStorage address so SimpleStorage() can create the 
+        // contract object and we can then call retrieve() on it. 
+        return  SimpleStorage(simpleStorageArray[_simpleStorageIndex]).retrieve();
+    }   
 
 
 }   
