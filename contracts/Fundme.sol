@@ -19,6 +19,8 @@ pragma solidity ^0.8.0;
     26. Smart contracts can hold funds. 
     27. Payable functions in Solidity are functions that let a smart contract accept Ether. 
     28. use msg.value; to see how much wei someone is sending
+
+    // Stopped at 3:38
 */
 
 
