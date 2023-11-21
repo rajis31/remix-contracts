@@ -16,7 +16,7 @@ pragma solidity ^0.8.0;
             - Value: Amout of wei to send
             - Data: What to send in the transaction
             - v,r,s: components of the tx signature
-    26. Smart contracts can hold funds. 
+    26. Smart contracts can hold funds since the address is like a wallet address
     27. Payable functions in Solidity are functions that let a smart contract accept Ether. 
     28. use msg.value; to see how much wei someone is sending
 
