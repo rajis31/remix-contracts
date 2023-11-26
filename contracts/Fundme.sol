@@ -29,6 +29,14 @@ pragma solidity ^0.8.8;
                or computation to external contracts
             - Centralized Oracles are a point of failure
             - Chainlink is a decetralized solution for brinnging data into a smart contract
+    33. Chainlink Features
+            - Allows you to access price data through a decenttalized system of nodes that fetches price data off 
+              the exchanges
+            - VRF or securing randomness for your app. It provices provable randomness
+            - Chainlink Keepers which is decentralized evant driven execution. These listen to events in your contract that need to fire and
+              perform whatever action you want it to perform.
+            - Connect to any API
+
     
 
 
@@ -38,11 +46,17 @@ pragma solidity ^0.8.8;
 
 contract FundMe {
     uint256 public minimumUSD = 50;
+
     constructor() public payable  {}
 
     function fund() public payable  {
         // Want to be able to send the min. fund amount in usd.
         require(msg.value > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
+    }
+
+    function getPrice() public {
+        // abi: 
+        // Address: 0x694AA1769357215DE4FAC081bf1f309aDC325306
     }
 
     // function withdraw() {}
