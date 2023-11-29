@@ -37,7 +37,8 @@ pragma solidity ^0.8.8;
               perform whatever action you want it to perform.
             - Connect to any API
      34. An ABI defines all the ways you can interact with the contract. its basically like the API
-     35. 
+     35. msg.sender is the address of whoever calls the function in a contract
+     36.
 
     
 
@@ -51,6 +52,8 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract FundMe {
     uint256 public minimumUSD = 50 * 1e18;
+    address[] public funders;
+    mapping(address => uint256) public  addressToAmountFunded;
     
 
     constructor() payable  {}
@@ -58,6 +61,8 @@ contract FundMe {
     function fund() public payable  {
         // Want to be able to send the min. fund amount in usd.
         require(getConversionRate(msg.value) > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
+        funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] = msg.value;
     }
 
     function getPrice() public view returns(uint256) {
