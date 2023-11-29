@@ -36,6 +36,8 @@ pragma solidity ^0.8.8;
             - Chainlink Keepers which is decentralized evant driven execution. These listen to events in your contract that need to fire and
               perform whatever action you want it to perform.
             - Connect to any API
+     34. An ABI defines all the ways you can interact with the contract. its basically like the API
+     35. 
 
     
 
@@ -44,19 +46,42 @@ pragma solidity ^0.8.8;
 */
 
 
-contract FundMe {
-    uint256 public minimumUSD = 50;
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-    constructor() public payable  {}
+
+contract FundMe {
+    uint256 public minimumUSD = 50 * 1e18;
+    
+
+    constructor() payable  {}
 
     function fund() public payable  {
         // Want to be able to send the min. fund amount in usd.
-        require(msg.value > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
+        require(getConversionRate(msg.value) > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
     }
 
-    function getPrice() public {
+    function getPrice() public view returns(uint256) {
         // abi: 
         // Address: 0x694AA1769357215DE4FAC081bf1f309aDC325306
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+        (uint80 roundId, int256 price, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) = priceFeed.latestRoundData();
+
+        // price is ETH in USD
+        return uint256(price * 1e10);
+    }
+
+    function getVersion() public view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+        return  priceFeed.version();
+    }
+
+    function getConversionRate(uint256 ethAmount) public view returns (uint256){
+        uint256 ethPrice = getPrice();
+        // price will be 3000_000000000000000000 
+
+        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18;
+        return ethAmountInUsd;
+
     }
 
     // function withdraw() {}
