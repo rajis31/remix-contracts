@@ -47,6 +47,18 @@ pragma solidity ^0.8.8;
         - msg.value is considered as the first parameter in any lib. functions
         - You can pass other variables as well into the function
     37. SafeMath.sol was used for the longest to handle large math operations.
+    // 38-40 are in SafeMathTester.sol
+
+    41. For loops
+          for(starting index, ending index, step ){}
+            - for(0,10,2) will go in 2's [0,2,4,...]
+    42. Modifiers
+        - allow you to modify function behavior
+        - modifiers are keywords created by you that come in the function declaration.
+        - The _; at the end of the modifier tells SOlidity to execute the rest of the code that comes after
+        - if _; is at the beginning of the modifier, then the rest of the code is executed first
+        
+
 
 */
 
@@ -58,9 +70,13 @@ contract FundMe {
     uint256 public minimumUSD = 50 * 1e18;
     address[] public funders;
     mapping(address => uint256) public  addressToAmountFunded;
+    address public  owner;
     
 
-    constructor() payable  {}
+    constructor() payable  {
+        owner = msg.sender; // owner is going to be whoever deploys the contract
+
+    }
 
     function fund() public payable  {
         // Want to be able to send the min. fund amount in usd.
@@ -70,5 +86,41 @@ contract FundMe {
     }
 
 
-    // function withdraw() {}
+    function withdraw() public onlyOwner  {
+        for(uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++){
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+        }
+
+        // Reset array
+        funders = new address[](0); // Reset the funders array to empty array
+
+        // Withdraw funds
+        // There are 3 ways: transfer, send, and call
+
+        // Transfer Method
+            // msg.sender is type address
+            // payable(msg.sender) is type payable address
+            // "this" refers to the contract object
+            // transfer() is limited to 2300 gas when transacting. Aything over will result in an error
+        // payable(msg.sender).transfer(address(this).balance);
+
+        // Send method
+            // returns a boolean whether transaction went through or not
+            // limited to 2300 gas 
+            // send will only revert when you add the require statement
+        // bool sendSuccess =  payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "Send Failed");
+
+        // Call method
+            // call is a lower lvl method used to call any function in the ethereum network
+        
+        (bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "Call Failed");
+    }
+
+    modifier  onlyOwner {
+       require(msg.sender == owner, "Sender is not owner"); // ensure this is the owner of the contract b4 withdrawing
+       _;
+    }
 }

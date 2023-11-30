@@ -6,8 +6,6 @@ pragma solidity ^0.6.0;
         and start back from the lower limit when dealing with numerical operations.
     39. In solidity >= 0.8 it will "check" automatically that the limits of the data type have not been reached otherwise it throws an error
     40. using unchecked keyword makes your code more gas efficient
-    41. 
-
 */
 
 
