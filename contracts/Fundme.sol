@@ -38,16 +38,16 @@ pragma solidity ^0.8.8;
             - Connect to any API
      34. An ABI defines all the ways you can interact with the contract. its basically like the API
      35. msg.sender is the address of whoever calls the function in a contract
-     36.
+     36. What are libraries?
+        - THey are similar to contracts except you can't declare state variables and send ether
+        - An embedded library is one where all library functions are internal
+        - External library must be deployed and then linked to the contract
 
-    
+
 
 
     // Stopped at 4:05
 */
-
-
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 
 contract FundMe {
@@ -65,29 +65,6 @@ contract FundMe {
         addressToAmountFunded[msg.sender] = msg.value;
     }
 
-    function getPrice() public view returns(uint256) {
-        // abi: 
-        // Address: 0x694AA1769357215DE4FAC081bf1f309aDC325306
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        (uint80 roundId, int256 price, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) = priceFeed.latestRoundData();
-
-        // price is ETH in USD
-        return uint256(price * 1e10);
-    }
-
-    function getVersion() public view returns (uint256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        return  priceFeed.version();
-    }
-
-    function getConversionRate(uint256 ethAmount) public view returns (uint256){
-        uint256 ethPrice = getPrice();
-        // price will be 3000_000000000000000000 
-
-        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18;
-        return ethAmountInUsd;
-
-    }
 
     // function withdraw() {}
 }
