@@ -42,15 +42,19 @@ pragma solidity ^0.8.8;
         - THey are similar to contracts except you can't declare state variables and send ether
         - An embedded library is one where all library functions are internal
         - External library must be deployed and then linked to the contract
+        - Now we can access the functions from a library through msg.value
+        - IE msg.value.getConversionRate()
+        - msg.value is considered as the first parameter in any lib. functions
+        - You can pass other variables as well into the function
+    37. SafeMath.sol was used for the longest to handle large math operations.
 
-
-
-
-    // Stopped at 4:05
 */
 
 
+import "./PriceConverter.sol";
+
 contract FundMe {
+    using PricerConverter for uint256;
     uint256 public minimumUSD = 50 * 1e18;
     address[] public funders;
     mapping(address => uint256) public  addressToAmountFunded;
@@ -60,7 +64,7 @@ contract FundMe {
 
     function fund() public payable  {
         // Want to be able to send the min. fund amount in usd.
-        require(getConversionRate(msg.value) > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
+        require(msg.value.getConversionRate() > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
     }
