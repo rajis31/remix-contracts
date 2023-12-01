@@ -57,20 +57,26 @@ pragma solidity ^0.8.8;
         - modifiers are keywords created by you that come in the function declaration.
         - The _; at the end of the modifier tells SOlidity to execute the rest of the code that comes after
         - if _; is at the beginning of the modifier, then the rest of the code is executed first
-        
 
+    43. constant / immutable keywords
+        - constant keyword is used on variables that are assigned at compile time
+        - constants don't take up a storate spot
+        - immutable are for variables that are assigned a value once later in the contract
+    
 
 */
+
+error NotOwner();
 
 
 import "./PriceConverter.sol";
 
 contract FundMe {
     using PricerConverter for uint256;
-    uint256 public minimumUSD = 50 * 1e18;
+    uint256 public constant MINIMUM_USD = 50 * 1e18;
     address[] public funders;
     mapping(address => uint256) public  addressToAmountFunded;
-    address public  owner;
+    address public immutable  owner;
     
 
     constructor() payable  {
@@ -80,7 +86,7 @@ contract FundMe {
 
     function fund() public payable  {
         // Want to be able to send the min. fund amount in usd.
-        require(msg.value.getConversionRate() > minimumUSD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
+        require(msg.value.getConversionRate() > MINIMUM_USD, "Didn't send enough ethereum"); // 1 * 10 ** 18 WEI = 1 ETH
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
     }
@@ -121,6 +127,11 @@ contract FundMe {
 
     modifier  onlyOwner {
        require(msg.sender == owner, "Sender is not owner"); // ensure this is the owner of the contract b4 withdrawing
+
+        // implementing a custom error
+       if(msg.sender != owner){
+        revert NotOwner(); // revert does the same thing as require
+       }
        _;
     }
 }
